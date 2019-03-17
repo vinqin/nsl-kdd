@@ -96,7 +96,7 @@ public class DataObject {
 
     private double dstHostSrvRerrorRate;
 
-    private boolean clazz; // 类标
+    private boolean positive; // 类标是否为正
 
     private double[] vector;
 
@@ -145,7 +145,8 @@ public class DataObject {
         setDstHostSrvSerrorRate(strings[38], 119);
         setDstHostRerrorRate(strings[39], 120);
         setDstHostSrvRerrorRate(strings[40], 121);
-        setClazz(strings[41]);
+        setPositive(strings[41]);
+
     }
 
     public void setDuration(String duration1, int idx) {
@@ -623,11 +624,11 @@ public class DataObject {
         vector[idx] = dstHostSrvRerrorRate;
     }
 
-    public void setClazz(String clazz1) {
-        if ("normal".equals(clazz1)) {
-            this.clazz = true;
-        } else if ("anomaly".equals(clazz1)) {
-            this.clazz = false;
+    public void setPositive(String positive1) {
+        if ("normal".equals(positive1)) {
+            this.positive = true;
+        } else if ("anomaly".equals(positive1)) {
+            this.positive = false;
         }
     }
 
@@ -635,7 +636,7 @@ public class DataObject {
         return vector;
     }
 
-    public boolean isClazz() {
-        return clazz;
+    public boolean isPositive() {
+        return positive;
     }
 }

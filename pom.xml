@@ -8,6 +8,10 @@
     <artifactId>trust1</artifactId>
     <version>1.0-SNAPSHOT</version>
 
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
     <dependencies>
         <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-math3 -->
         <!--用于计算欧式距离-->

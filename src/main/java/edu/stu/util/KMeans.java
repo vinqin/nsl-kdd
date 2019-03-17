@@ -39,20 +39,24 @@ public class KMeans {
         crita = new double[repeat];
     }
 
+    private void calCluster(int[] count, int[] positiveClass, DataObject object, int id) {
+        count[id]++;
+        if (object.isPositive()) {
+            positiveClass[id]++;
+        }
+    }
+
     // 初始化k个质心，每个质心是len维的向量，每维均在left--right之间
     public void initCenter(int len, ArrayList<DataObject> objects) {
         Random random = new Random(System.currentTimeMillis());
         int[] count = new int[k]; // 记录每个簇有多少个元素
-        int[] clazzes = new int[k]; // 记录每个簇中类标为正的元素个数
+        int[] positiveClass = new int[k]; // 记录每个簇中类标为正的元素个数
 
         Iterator<DataObject> iter = objects.iterator();
         while (iter.hasNext()) {
             DataObject object = iter.next();
             int id = random.nextInt(10000) % k;
-            count[id]++;
-            if (object.isClazz()) {
-                clazzes[id]++;
-            }
+            calCluster(count, positiveClass, object, id);
             for (int i = 0;
                  i < len;
                  i++) {
@@ -69,7 +73,7 @@ public class KMeans {
             }
 
             clusters[i].setSize(count[i]);
-            clusters[i].setPositiveSize(clazzes[i]);
+            clusters[i].setPositiveSize(positiveClass[i]);
         }
     }
 
@@ -101,7 +105,7 @@ public class KMeans {
     public boolean calNewCenter(ArrayList<DataObject> objects, int len) {
         boolean end = true;
         int[] count = new int[k]; // 记录每个簇有多少个元素
-        int[] clazzes = new int[k]; // 记录每个簇中类标为正的元素个数
+        int[] positiveClass = new int[k]; // 记录每个簇中类标为正的元素个数
         double[][] sum = new double[k][];
         for (int i = 0;
              i < k;
@@ -112,10 +116,7 @@ public class KMeans {
         while (iter.hasNext()) {
             DataObject object = iter.next();
             int id = object.getCid();
-            count[id]++;
-            if (object.isClazz()) {
-                clazzes[id]++;
-            }
+            calCluster(count, positiveClass, object, id);
             for (int i = 0;
                  i < len;
                  i++) {
@@ -165,7 +166,7 @@ public class KMeans {
                     center[i][j] = sum[i][j];
                 }
                 clusters[i].setSize(count[i]);
-                clusters[i].setPositiveSize(clazzes[i]);
+                clusters[i].setPositiveSize(positiveClass[i]);
             }
         }
         return end;
@@ -212,7 +213,7 @@ public class KMeans {
         DataSource datasource = new DataSource();
         datasource.loadFile(new File("/Users/vinqin/IdeaProjects/trust1/test-dir/test.txt"));
         int len = DataObject.COL;
-        // 划分为4个簇，质心移动小于1E-8时终止迭代，重复运行7次
+        // 划分为6个簇，质心移动小于1E-8时终止迭代，重复运行7次
         KMeans km = new KMeans(6, 1E-10, 7, len);
         int index = 0;
         double minsa = Double.MAX_VALUE;
